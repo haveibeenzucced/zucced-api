@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+*.egg-info/
+.eggs/
+.coverage
+htmlcov/
+venv/
+.venv/
+dist/
+build/
+coverage.xml
+src/two_factor_api/core/version.py
+pylint.txt
+requirements.install
+pylint.txt
+.cache/
+.idea
