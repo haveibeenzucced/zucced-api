@@ -1,21 +1,22 @@
 import logging
+from logging.config import fileConfig
+import pathlib
 import sys
 import time
-import pathlib
-from logging.config import fileConfig
 
 from alembic import context
-from sqlalchemy import engine_from_config, pool
+from sqlalchemy import engine_from_config
+from sqlalchemy import pool
 
 # Make the project importable noqa: isort skip
 PROJECT_ROOT_DIR = str(pathlib.Path(__file__).parents[1])  # noqa: isort skip
 sys.path.append(PROJECT_ROOT_DIR)  # noqa: isort skip
 
 from zucced_api import app
-from zucced_api.core.config_loader import (DB_DSN, DB_RETRY_INTERVAL,
-                                                 DB_RETRY_LIMIT)
+from zucced_api.core.config_loader import DB_DSN
+from zucced_api.core.config_loader import DB_RETRY_INTERVAL
+from zucced_api.core.config_loader import DB_RETRY_LIMIT
 from zucced_api.core.db import DB
-
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
@@ -84,15 +85,19 @@ def run_migrations_online():
             break
 
     with connection:
-        context.configure(connection=connection,
-                          target_metadata=target_metadata)
+        context.configure(
+            connection=connection,
+            target_metadata=target_metadata,
+        )
 
         with context.begin_transaction():
             context.run_migrations()
 
     with connectable.connect() as connection:
-        context.configure(connection=connection,
-                          target_metadata=target_metadata)
+        context.configure(
+            connection=connection,
+            target_metadata=target_metadata,
+        )
 
         with context.begin_transaction():
             context.run_migrations()

@@ -14,9 +14,13 @@ from zucced_api.domain.compromised_accounts import compromised_account_schemas
 
 router = fastapi.APIRouter()
 
-@router.get('/', response_model=compromised_account_schemas.Response)
-async def get_compromised_accounts(
-        facebook_id: str,
-        service=fastapi.Depends(service_factory.get_compromised_account_services)):
 
+ACCOUNT_SERVICE = fastapi.Depends(service_factory.get_compromised_account_services)
+
+
+@router.get("/", response_model=compromised_account_schemas.Response)
+async def get_compromised_accounts(
+    facebook_id: str,
+    service=ACCOUNT_SERVICE,
+):
     return await service.get_by_id(account_id=facebook_id)

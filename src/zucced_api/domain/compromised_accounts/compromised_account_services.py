@@ -5,11 +5,12 @@ transform the result provided by the Quries class into Schemas. When
 creating an instance of Service() you shouldn't call
 `service._queries()` directly, hence why it's declared as private (_).
 """
-from zucced_api.domain.compromised_accounts import compromised_account_queries, compromised_account_schemas
 from zucced_api.core.exceptions import http_exceptions
+from zucced_api.domain.compromised_accounts import compromised_account_queries
+from zucced_api.domain.compromised_accounts import compromised_account_schemas
 
 
-class Service:
+class Service(object):
     """Service."""
 
     def __init__(self, queries: compromised_account_queries.Queries):
@@ -20,14 +21,17 @@ class Service:
         """
         self._queries = queries
 
-    async def get_by_id(
-            self, account_id: str) -> compromised_account_schemas.Response:
+    async def get_by_id(self, account_id: str) -> compromised_account_schemas.Response:
         """Gets the compromised_account that matches the provided account_id.
 
         Args:
             account_id (str): account_id
+
         Returns:
             compromised_account_schemas.Response: If the compromised_account is found, otherwise 404.
+
+        Raises:
+            NotFound: if no account is found.
         """
         compromised_account = await self._queries.get_by_id(account_id=account_id)
         if compromised_account is None:
